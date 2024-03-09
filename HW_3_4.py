@@ -1,59 +1,50 @@
-from datetime import datetime, timedelta  # Імпорт класів datetime та timedelta для роботи з датами і часом
-
-users = [  # Список користувачів з їхніми датами народження
+from datetime import datetime, timedelta 
+users = [ 
     {"name": "John Doe", "birthday": "1985.01.23"},
     {"name": "Colton Mark", "birthday": "1995.01.27"},
     {"name": "Tom Morgan", "birthday": "1992.03.05"},
     {"name": "Liam Atkins", "birthday": "1976.03.07"},
     {"name": "Ciaran Daisy", "birthday": "1989.03.10"},
 ]
+def get_upcoming_birthsdays(users):
+    def find_next_weekday(d, weekday: int): 
 
-def find_next_weekday(d, weekday: int):  # Функція для знаходження наступного заданого дня тижня після заданої дати
-    """
-     Ф-ція для знаходження наступного заданого дня тижня після заданої дати
-    :param d: datetime.date - початкова дата
-    :param weekday: int - день тижня від 0 (понеділок) до 6 (неділя)
-    :return:
-    """
-    days_ahead = weekday - d.weekday()  # Різниця між заданим днем тижня та днем тижня заданої дати
-    if days_ahead <= 0:  # Якщо день народження вже минув
-        days_ahead += 7  # Додаємо 7 днів, щоб отримати наступний тиждень
-    return d + timedelta(days=days_ahead)  # Повертаємо нову дату
+        days_ahead = weekday - d.weekday()  
+        if days_ahead <= 0:  
+            days_ahead += 7  
+        return d + timedelta(days=days_ahead)  
 
 
-# TODO: Оформити в функцію
-prepared_users = []  # Список підготовлених користувачів
-def working_users():
+    prepared_users = [] 
+    def working_users():
     
-    for user in users:  # Ітерація по кожному користувачеві зі списку
-        try:
-            birthday = datetime.strptime(user['birthday'], '%Y.%m.%d').date()  # Парсимо дату народження
-            prepared_users.append({"name": user['name'], 'birthday': birthday})  # Додаємо користувача з підготовленою датою народження
-        except ValueError:
-            print(f'Некоректна дата народження для користувача {user["name"]}')  # Виводимо повідомлення про помилку
-    return prepared_users
+        for user in users:  
+            try:
+                birthday = datetime.strptime(user['birthday'], '%Y.%m.%d').date()  
+                prepared_users.append({"name": user['name'], 'birthday': birthday})  
+            except ValueError:
+                print(f'Некоректна дата народження для користувача {user["name"]}')  
+        return prepared_users
 
-# TODO: Оформити в функцію
-days = 7  # Кількість днів для перевірки на наближені дні народження
-today = datetime.today().date()  # Поточна дата
-upcoming_birthdays = []  # Список майбутніх днів народження
-def final_users():
+
+    days = 7  
+    today = datetime.today().date() 
+    upcoming_birthdays = [] 
+    def final_users():
     
-    for user in prepared_users:  # Ітерація по підготовленим користувачам
-        birthday_this_year = user["birthday"].replace(year=today.year)  # Заміна року на поточний для дня народження цього року
+        for user in prepared_users: 
+            birthday_this_year = user["birthday"].replace(year=today.year) 
 
-        if birthday_this_year < today:  # Якщо дата народження вже пройшла цього року
-            birthday_this_year = birthday_this_year.replace(year=today.year + 1)  # Переносимо наступний рік
+            if birthday_this_year < today: 
+                birthday_this_year = birthday_this_year.replace(year=today.year + 1)  
 
-        if 0 <= (birthday_this_year - today).days <= days:  # Якщо день народження в межах вказаного періоду
-            if birthday_this_year.weekday() >= 5:  # Якщо день народження випадає на суботу або неділю
-                birthday_this_year = find_next_weekday(birthday_this_year, 0)  # Знаходимо наступний понеділок
+            if 0 <= (birthday_this_year - today).days <= days:  
+                if birthday_this_year.weekday() >= 5: 
+                    birthday_this_year = find_next_weekday(birthday_this_year, 0) 
 
-            congratulation_date_str = birthday_this_year.strftime('%Y.%m.%d')  # Форматуємо дату у рядок
-            upcoming_birthdays.append({  # Додаємо дані про майбутній день народження
-            "name": user["name"],
-            "congratulation_date": congratulation_date_str
-        })
-    return upcoming_birthdays
-
-print(upcoming_birthdays)  # Виводимо список майбутніх днів народження
+                congratulation_date_str = birthday_this_year.strftime('%Y.%m.%d')  
+                upcoming_birthdays.append({  
+                "name": user["name"],
+                "congratulation_date": congratulation_date_str
+            })
+        return upcoming_birthdays
