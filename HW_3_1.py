@@ -10,5 +10,5 @@ def get_days_from_today(date):
     except ValueError:
         return 'Wrong entering format, enter it in format "YYYY-MM-DD"'
 
-checking = get_days_from_today('2024.10.09')
+checking = get_days_from_today('2024-10-09')
 print(checking)
