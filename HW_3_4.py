@@ -1,50 +1,34 @@
-from datetime import datetime, timedelta 
-users = [ 
-    {"name": "John Doe", "birthday": "1985.01.23"},
-    {"name": "Colton Mark", "birthday": "1995.01.27"},
-    {"name": "Tom Morgan", "birthday": "1992.03.05"},
-    {"name": "Liam Atkins", "birthday": "1976.03.07"},
-    {"name": "Ciaran Daisy", "birthday": "1989.03.10"},
+from datetime import datetime, timedelta
+
+def get_upcoming_birthdays(users):
+    today = datetime.today().date()
+    upcoming_birthdays = []
+
+    for user in users:
+        birthday_date = datetime.strptime(user["birthday"], "%Y.%m.%d").date()
+
+        birthday_this_year = datetime(today.year, birthday_date.month, birthday_date.day).date()
+
+        if birthday_this_year < today:
+            birthday_this_year = datetime(today.year + 1, birthday_date.month, birthday_date.day).date()
+
+        days_until_birthday = (birthday_this_year - today).days
+
+        if 0 <= days_until_birthday <= 7:
+            if birthday_this_year.weekday() >= 5:
+                next_monday = today + timedelta(days=(7 - today.weekday()) + 1)
+                congrats_date = next_monday
+            else:
+                congrats_date = birthday_this_year
+
+            upcoming_birthdays.append({"name": user["name"], "congratulation_date": congrats_date.strftime("%Y.%m.%d")})
+
+    return upcoming_birthdays
+
+users = [
+    {"name": "John Doe", "birthday": "1985.03.12"},
+    {"name": "Jane Smith", "birthday": "1990.01.27"}
 ]
-def get_upcoming_birthsdays(users):
-    def find_next_weekday(d, weekday: int): 
 
-        days_ahead = weekday - d.weekday()  
-        if days_ahead <= 0:  
-            days_ahead += 7  
-        return d + timedelta(days=days_ahead)  
-
-
-    prepared_users = [] 
-    def working_users():
-    
-        for user in users:  
-            try:
-                birthday = datetime.strptime(user['birthday'], '%Y.%m.%d').date()  
-                prepared_users.append({"name": user['name'], 'birthday': birthday})  
-            except ValueError:
-                print(f'Некоректна дата народження для користувача {user["name"]}')  
-        return prepared_users
-
-
-    days = 7  
-    today = datetime.today().date() 
-    upcoming_birthdays = [] 
-    def final_users():
-    
-        for user in prepared_users: 
-            birthday_this_year = user["birthday"].replace(year=today.year) 
-
-            if birthday_this_year < today: 
-                birthday_this_year = birthday_this_year.replace(year=today.year + 1)  
-
-            if 0 <= (birthday_this_year - today).days <= days:  
-                if birthday_this_year.weekday() >= 5: 
-                    birthday_this_year = find_next_weekday(birthday_this_year, 0) 
-
-                congratulation_date_str = birthday_this_year.strftime('%Y.%m.%d')  
-                upcoming_birthdays.append({  
-                "name": user["name"],
-                "congratulation_date": congratulation_date_str
-            })
-        return upcoming_birthdays
+upcoming_birthdays = get_upcoming_birthdays(users)
+print("Список привітань на цьому тижні:", upcoming_birthdays)
