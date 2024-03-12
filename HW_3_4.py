@@ -16,7 +16,7 @@ def get_upcoming_birthdays(users):
 
         if 0 <= days_until_birthday <= 7:
             if birthday_this_year.weekday() >= 5:
-                next_monday = today + timedelta(days=(7 - today.weekday()) + 1)
+                next_monday = today + timedelta(days=(7 - today.weekday()))
                 congrats_date = next_monday
             else:
                 congrats_date = birthday_this_year
@@ -26,8 +26,17 @@ def get_upcoming_birthdays(users):
     return upcoming_birthdays
 
 users = [
-    {"name": "John Doe", "birthday": "1985.03.12"},
-    {"name": "Jane Smith", "birthday": "1990.01.27"}
+{'name': 'Jane Smith', 'birthday': '1990.03.10'},
+{'name': 'Nick Darsel', 'birthday': '1984.03.11'},
+{'name': 'Liam Smith', 'birthday': '1995.03.12'},
+{'name': 'Mohel Smith', 'birthday': '1995.03.13'},
+{'name': 'John Dark', 'birthday': '1985.03.14'},
+{'name': 'Mary Dark', 'birthday': '1985.03.15'},
+{'name': 'Derek Dark', 'birthday': '1985.03.16'},
+{'name': 'Jane Smith', 'birthday': '1990.03.17'},
+{'name': 'Liam Smith', 'birthday': '1995.03.18'},
+{'name': 'Mohel Smith', 'birthday': '1995.03.19'},
+{'name': 'John Dark', 'birthday': '1985.03.20'}
 ]
 
 upcoming_birthdays = get_upcoming_birthdays(users)
